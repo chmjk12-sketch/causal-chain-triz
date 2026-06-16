@@ -1,0 +1,26 @@
+{
+  "name": "causal-chain-triz-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.0",
+    "axios": "^1.6.2",
+    "recharts": "^2.10.3",
+    "react-flow-renderer": "^10.3.17",
+    "dagre": "^0.8.5",
+    "antd": "^5.12.5",
+    "@ant-design/icons": "^5.2.6",
+    "styled-components": "^6.1.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.8"
+  },
+  "scripts": {
+    "dev": "vite --port 3000 --host",
+    "build": "vite build",
+    "preview": "vite preview"
+  }
+}
