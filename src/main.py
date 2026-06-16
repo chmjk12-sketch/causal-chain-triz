@@ -2,8 +2,7 @@ import os
 import httpx
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import PlainTextResponse, FileResponse
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
 from src.config import settings
@@ -28,10 +27,9 @@ app.add_middleware(
 # 注册路由
 app.include_router(api_router)
 
-# 挂载前端静态文件（生产构建产物）
+# 前端构建产物路径
 frontend_dir = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
-if os.path.exists(os.path.join(frontend_dir, "index.html")):
-    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
+index_html = os.path.join(frontend_dir, "index.html")
 
 
 @app.get("/health", response_model=HealthResponse)
@@ -75,6 +73,21 @@ async def list_tools():
         }
     ]
     return ApiResponse(code=200, data=tools, message="获取成功")
+
+
+@app.get("/{full_path:path}", include_in_schema=False)
+async def serve_frontend(full_path: str):
+    """SPA 前端路由（所有非 API 请求返回 index.html）"""
+    if not os.path.exists(index_html):
+        return {"status": "frontend not built"}
+    
+    # 检查是否有对应静态文件
+    static_file = os.path.join(frontend_dir, full_path)
+    if os.path.isfile(static_file):
+        return FileResponse(static_file)
+    
+    # SPA 路由：返回 index.html
+    return FileResponse(index_html)
 
 
 @app.on_event("startup")
