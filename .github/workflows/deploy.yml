@@ -73,10 +73,12 @@ jobs:
           REGISTRY_USER='${{ secrets.REGISTRY_USERNAME }}'
           REGISTRY_PASS='${{ secrets.REGISTRY_PASSWORD }}'
 
+          DEEPSEEK_KEY='${{ secrets.DEEPSEEK_API_KEY }}'
+
           deploy_cmd = f'''docker login --username={REGISTRY_USER} --password={REGISTRY_PASS} {REGISTRY}
           docker pull {REGISTRY}/{NAMESPACE}/{APP_NAME}:latest
           docker stop {APP_NAME}_app 2>/dev/null; docker rm {APP_NAME}_app 2>/dev/null
-          docker run -d --name {APP_NAME}_app -p {APP_PORT}:80 --restart always --network caddy-net {REGISTRY}/{NAMESPACE}/{APP_NAME}:latest
+          docker run -d --name {APP_NAME}_app -p {APP_PORT}:80 --restart always --network caddy-net -e DEEPSEEK_API_KEY={DEEPSEEK_KEY} {REGISTRY}/{NAMESPACE}/{APP_NAME}:latest
           sleep 5
           curl -sf http://127.0.0.1:{APP_PORT}/health && echo HEALTH_OK || echo HEALTH_FAIL
           curl -sf http://127.0.0.1:{APP_PORT}/api/v1/triz/principles | head -c 200'''
