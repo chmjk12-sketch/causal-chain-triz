@@ -1,0 +1,39 @@
+name: 因果链分析 Agent
+slug: causal-chain-triz
+description: 深挖分析问题背后的因果关系，并结合 TRIZ 理论提供创新解决方案
+version: 1.0.0
+author: Agent Builder
+
+endpoints:
+  - path: /health
+    method: GET
+    description: 健康检查
+  - path: /metrics
+    method: GET
+    description: 监控指标
+  - path: /api/v1/analyze
+    method: POST
+    description: 因果链分析
+  - path: /api/v1/triz/contradictions
+    method: POST
+    description: TRIZ 矛盾分析
+  - path: /api/v1/triz/principles
+    method: GET
+    description: 获取 TRIZ 创新原理
+  - path: /mcp/tools
+    method: GET
+    description: MCP 工具列表
+
+dependencies:
+  ai_model: deepseek
+  database: none
+
+frontend:
+  type: react
+  style: data-visualization
+  port: 3000
+
+backend:
+  framework: fastapi
+  port: 3007
+  python_version: "3.11"
