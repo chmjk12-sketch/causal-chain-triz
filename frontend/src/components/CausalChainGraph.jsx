@@ -6,8 +6,8 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   MarkerType
-} from 'reactflow'
-import 'reactflow/dist/style.css'
+} from 'react-flow-renderer'
+import 'react-flow-renderer/dist/style.css'
 import dagre from 'dagre'
 
 const nodeWidth = 180
